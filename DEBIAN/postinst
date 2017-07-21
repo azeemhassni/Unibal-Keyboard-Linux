@@ -1,0 +1,23 @@
+#!/bin/bash
+
+XML_PATH="/usr/share/X11/xkb/rules/evdev.xml";
+XML=$(cat $XML_PATH);
+
+NODE="<!-- Unibal start -->\n<layout>\n\t<configItem>\n\t\t<name>bal</name>\n\t\t<shortDescription>bal</shortDescription>\n\t\t<description>Balochi</description>\n\t\t<languageList>\n\t\t\t<iso639Id>bal</iso639Id>\n\t\t</languageList>\n\t</configItem>\n\t<variantList/>\n</layout>\n<!-- Unibal end -->";
+
+
+if grep -q "<name>bal</name>" <<< "$XML" ; then
+
+	# silent we don't need to do anything	
+	echo "already exists";
+else
+	# add our keyboard xml node
+	sed -i "s|</layoutList>| $NODE\n\t</layoutList>|g" $XML_PATH
+	echo "Keyboard installed successfully";
+
+	EXISTING_SOURCES_WITH_BAL=$(gsettings get org.gnome.desktop.input-sources sources | sed -e "s/]/, ('xkb', 'bal')]/");
+	gsettings set org.gnome.desktop.input-sources sources "$EXISTING_SOURCES_WITH_BAL";
+
+	echo "Text entry has been added for ÁWERTY (Balochi)";
+	echo "Logout and log back in to use the keyboard.";
+fi

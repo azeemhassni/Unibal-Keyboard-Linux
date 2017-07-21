@@ -1,0 +1,8 @@
+Package: balochi-unibal
+Version: 1.0
+Section: base
+Priority: Optional
+Architecture: all
+Maintainer: JeyKeu
+Description: Balochi Unibal script keyboard for Debian based systems.
+

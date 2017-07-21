@@ -1,0 +1,15 @@
+#!/bin/bash
+
+XML_PATH="/usr/share/X11/xkb/rules/evdev.xml";
+XML=$(cat $XML_PATH);
+
+if grep -q "<name>bal</name>" <<< "$XML" ; then
+	# remove our keyboard xml node
+	sed -i '/<!-- Unibal start -->/, /<!-- Unibal end -->/c\' $XML_PATH
+
+	echo "Keyboard removed successfully";
+else
+	# silent we don't need to do anything
+	echo "Nothing to do, keyboard is not installed";
+fi
+
